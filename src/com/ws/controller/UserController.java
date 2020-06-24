@@ -132,7 +132,6 @@ public class UserController {
 			}
 			users1.add(i, user);
 		}
-		//转JSON
 		JSONObject allusers = new JSONObject();
 		allusers.put("code", 0);
 		allusers.put("msg", "成功");
