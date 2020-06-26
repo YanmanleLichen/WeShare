@@ -102,6 +102,28 @@ public class UserController {
 		session.setAttribute("msg", "修改失败！");
 		return "ModifyUser";
 	}
+	@RequestMapping(value = "/updateUserStateFreeze.action")
+	public String updateUserStateFreeze(String user_id, HttpSession session){
+		String freeze = "f";
+		User user = userService.selectUserByUserId(user_id);
+		int ret = userService.updateUserState(user_id, freeze);
+		if(ret > 0){
+			return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+		}
+		session.setAttribute("msg", "修改失败！");
+		return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+	}
+	@RequestMapping(value = "/updateUserStateUnseal.action")
+	public String updateUserStateUnseal(String user_id, HttpSession session){
+		String unseal = "t";
+		User user = userService.selectUserByUserId(user_id);
+		int ret = userService.updateUserState(user_id, unseal);
+		if(ret > 0){
+			return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+		}
+		session.setAttribute("msg", "修改失败！");
+		return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+	}
 
 	@RequestMapping(value = "/selectUsersList.action", produces = "application/json;charset=utf-8")
 	@ResponseBody

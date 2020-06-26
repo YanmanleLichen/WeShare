@@ -74,6 +74,12 @@
 						<c:if test="${currentUser.user_name==SpaceUser.user_name }">
 							<a href="${pageContext.request.contextPath}/toUpdateUser.action">点击修改账号信息</a>
 						</c:if>
+						<c:if test="${admin != null && SpaceUser.user_state=='t' }">
+							<a href="${pageContext.request.contextPath}/updateUserStateFreeze.action?user_id=${SpaceUser.user_id}">点击封停此账号</a>
+						</c:if>
+						<c:if test="${admin != null && SpaceUser.user_state=='f' }">
+							<a href="${pageContext.request.contextPath}/updateUserStateUnseal.action?user_id=${SpaceUser.user_id}">点击解封此账号</a>
+						</c:if>
 						<br>
 						<c:if test="${SpaceUser.identity=='inside' }">身份：校内师生</c:if>
 						<c:if test="${SpaceUser.identity=='outside' }">身份：校外人士</c:if>

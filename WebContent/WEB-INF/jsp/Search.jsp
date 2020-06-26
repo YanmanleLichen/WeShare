@@ -5,23 +5,18 @@
 <html>
 
 	<head>
-		<title>闻说 - 广场</title>
+		<title>闻说 - 搜索</title>
 
 		<!-- meta -->
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- css -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pace.css">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mycss.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/custom.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css" media="all">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/layui/dist/css/layui.css" media="all">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/build/layui.css" media="all">
 
 		<!-- js -->
 		<script src="${pageContext.request.contextPath}/js/jquery-2.1.3.min.js"></script>
@@ -32,13 +27,12 @@
 	</head>
 
 	<body>
-
 		<div class="container">
 			<header id="site-header">
 				<div class="row">
 					<div class="col-md-4 col-sm-5 col-xs-8">
 						<div class="logo">
-							<h1><a href="${pageContext.request.contextPath}/toCenter.action"><b>闻说 - 广场</a></h1>
+							<h1><a href="${pageContext.request.contextPath}/toCenter.action"><b>闻说 - 搜索</a></h1>
 						</div>
 					</div>
 					<!-- col-md-4 -->
@@ -77,7 +71,7 @@
 									</li>
 									<li>
 										<c:if test="${currentUser==null }">
-											<a href="${pageContext.request.contextPath}/toAdminCenter.action" data-hover="${admin.admin_name }">
+											<a href="${pageContext.request.contextPath}/toAdminCenter.action?user_name=${admin.admin_name}" data-hover="${admin.admin_name}">
 												<font color=red>
 													管理员：${admin.admin_name }
 												</font>
@@ -112,44 +106,64 @@
 								<div style="float:right;">[发布信息]&nbsp;&nbsp;&nbsp;</div>
 							</a>
 						</c:if>
-						<hr>
-
-						<div class="layui-carousel" id="test1">
-							<div carousel-item="">
-								<div>
-									<img src="https://www.tfswufe.edu.cn/__local/C/87/56/3C12A2C9CC7D100141B20A9E21E_B274B881_161EF.jpg">
-								</div>
-								<div>
-									<img src="https://www.tfswufe.edu.cn/__local/8/48/E2/D6B446FDE8E6F865F96E9A90FAA_D4429944_11988.png">
-								</div>
-								<div>
-									<img src="https://www.tfswufe.edu.cn/__local/7/C2/42/58EC0DA5FA4F01C3A9FA3C5D387_38EB6794_AFB9.jpg">
-								</div>
-							</div>
-						</div>
-						<hr>
-						<div class="link">
-							<div class="read-more cl-effect-14">
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=系统公告" class="more-link">系统公告 <span class="meta-nav">→</span></a>
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=综合信息" class="more-link">综合信息 <span class="meta-nav">→</span></a>
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=校园新闻" class="more-link">校园新闻 <span class="meta-nav">→</span></a>
-							</div>
-						</div>
-						<div class="link">
-							<div class="read-more cl-effect-14">
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=游戏交流" class="more-link">游戏交流 <span class="meta-nav">→</span></a>
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=学习交流" class="more-link">学习交流 <span class="meta-nav">→</span></a>
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=失物招领" class="more-link">失物招领 <span class="meta-nav">→</span></a>
-							</div>
-						</div>
-						<div class="link">
-							<div class="read-more cl-effect-14">
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=二手交易" class="more-link">二手交易 <span class="meta-nav">→</span></a>
-								<a href="${pageContext.request.contextPath}/toSection.action?blog_type=租赁信息" class="more-link">租赁信息 <span class="meta-nav">→</span></a>
-								<a href="" class="more-link">敬请期待 <span class="meta-nav">→</span></a>
-							</div>
-						</div>
-						<hr>
+						<table id="demo" lay-filter="test"></table>
+						<input type="hidden" name="type" id="type" value="${blog_type }" />
+						<script>
+							var blog_type = document.getElementById("type").value;
+							console.log("blog_type: " + blog_type);
+							layui.use('table', function() {
+								var table = layui.table;
+								//第一个实例
+								table.render({
+									elem: '#demo'
+										//,height: 600
+										,
+									skin: 'nob',
+									even: false,
+									size: 'lg',
+									url: '${pageContext.request.contextPath}/selectAllBlogsList.action?blog_type=' + blog_type //数据接口
+										,
+									page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+										layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] //自定义分页布局
+											,
+										groups: 5,
+										first: '首页',
+										prev: '上一页',
+										next: '下一页',
+										last: '尾页',
+										limit: 10,
+										limits: [5, 10, 15]
+									},
+									cols: [
+										[{
+											field: 'blog_title',
+											title: '标题',
+											width: 380,
+											fixed: 'left'
+										}, {
+											field: 'blog_type',
+											title: '类型',
+											width: 100
+										}, {
+											field: 'blog_user',
+											title: '发布者',
+											width: 75
+										}, {
+											field: 'blog_time',
+											title: '最后更新时间',
+											width: 175
+										}]
+									]
+								});
+								table.on('row(test)', function(obj) {
+									console.log(obj.tr) //得到当前行元素对象
+									console.log(obj.data) //得到当前行数据
+									window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
+								});
+							});
+						</script>
+						<h2><font color=red>${msg}</font></h2>
+						<hr />
 					</main>
 
 					<aside class="col-md-4">
@@ -216,20 +230,7 @@
 				</div>
 			</div>
 		</footer>
-
 		<script src="${pageContext.request.contextPath}/js/script.js"></script>
-		<script src="${pageContext.request.contextPath}/layui/layui.js"></script>
-		<script>
-			layui.use(['carousel'], function() {
-				var carousel = layui.carousel;
-				carousel.render({
-					elem: '#test1',
-					width: '700px',
-					height: '440px',
-					interval: 5000
-				});
-			});
-		</script>
 	</body>
 
 </html>

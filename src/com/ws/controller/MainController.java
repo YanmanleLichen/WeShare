@@ -52,4 +52,9 @@ public class MainController {
 		System.out.println("toAddLicence.action");
 		return "AddLicence";
 	}
+	@RequestMapping(value="/toSearch.action")
+	public String toSearch() {
+		System.out.println("toSearch.action");
+		return "Search";
+	}
 }
