@@ -4,7 +4,7 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 id="WebApp_ID" version="3.0">
-	<!-- 配置加载Spring文件的监听器-->	
+	<!-- 配置加载Spring文件的监听器-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:applicationContext.xml</param-value>
@@ -49,4 +49,7 @@ id="WebApp_ID" version="3.0">
 		<url-pattern>*.action</url-pattern>
 	</filter-mapping>
 	<!-- 系统默认页面 -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 </web-app>
