@@ -55,10 +55,10 @@
 									<li class="cl-effect-11">
 										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索" target="_blank">搜索</a>
 									</li>
-									<c:if test="${currentUser!=null }">
-									<li class="cl-effect-11">
-										<a href="${pageContext.request.contextPath}/Logout.action" data-hover="退出">退出</a>
-									</li>
+									<c:if test="${currentUser!=null ||admin!=null}">
+										<li class="cl-effect-11">
+											<a href="${pageContext.request.contextPath}/Logout.action" data-hover="退出">退出</a>
+										</li>
 									</c:if>
 									<li class="">
 										<a href="" data-hover="<font color=red>${currentUser.user_name }</font>">

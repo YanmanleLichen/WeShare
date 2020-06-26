@@ -46,8 +46,19 @@
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav navbar-right">
 									<li class="cl-effect-11">
+										<a href="${pageContext.request.contextPath}/toIndex.action" data-hover="首页">首页</a>
+									</li>
+									<li class="cl-effect-11">
 										<a href="${pageContext.request.contextPath}/toCenter.action" data-hover="广场">广场</a>
 									</li>
+									<li class="cl-effect-11">
+										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索" target="_blank">搜索</a>
+									</li>
+									<c:if test="${currentUser!=null ||admin!=null}">
+										<li class="cl-effect-11">
+											<a href="${pageContext.request.contextPath}/Logout.action" data-hover="退出">退出</a>
+										</li>
+									</c:if>
 									<li class="cl-effect-11">
 										<a href="${pageContext.request.contextPath}/toAdminCenter">
 											<font color=red>管理员：${admin.admin_name }</font>
