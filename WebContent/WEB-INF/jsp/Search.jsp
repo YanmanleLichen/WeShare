@@ -106,6 +106,16 @@
 								<div style="float:right;">[发布信息]&nbsp;&nbsp;&nbsp;</div>
 							</a>
 						</c:if>
+						<hr>
+						<br />
+						<div class="layui-input-block" style="margin-left: 0px;">
+							<input id="search" name="search" lay-verify="title" 
+								style="margin-right:10px;float:left;width: 600px;"
+								autocomplete="off" placeholder="请输入" class="layui-input">
+							<button style="width:140px;float: right;" 
+								class="layui-btn" lay-filter="formDemo" onclick="analysis()">查找</button>
+						</div>
+						<br />
 						<table id="demo" lay-filter="test"></table>
 						<input type="hidden" name="type" id="type" value="${blog_type }" />
 						<script>
