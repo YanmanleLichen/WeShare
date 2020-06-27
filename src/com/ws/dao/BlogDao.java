@@ -14,6 +14,14 @@ public interface BlogDao {
 			);
 	public Blog selectBlogByBlogId(
 			@Param("blog_id") String blog_id);
+	public List<Blog> selectAllBlogsByUserId(
+			@Param("blog_user") String blog_user,
+			@Param("start") Integer start,
+			@Param("size") Integer size
+		);
+	public int selectAllBlogsCountByUserId(
+			@Param("blog_user") String blog_user
+	);
 	public int insertBlog(
 			@Param("blog_id") String blog_id,
 			@Param("blog_time") String blog_time,

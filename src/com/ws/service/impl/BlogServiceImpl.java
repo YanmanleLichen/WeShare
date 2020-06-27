@@ -61,4 +61,16 @@ public class BlogServiceImpl implements BlogService{
 		int ret = this.blogDao.selectBlogsLikeSearchListCount(search);
 		return ret;
 	}
+
+	@Override
+	public List<Blog> selectAllBlogsByUserId(String blog_user, int start, int size) {
+		List<Blog> blogs = this.blogDao.selectAllBlogsByUserId(blog_user, start, size);
+		return blogs;
+	}
+
+	@Override
+	public int selectAllBlogsCountByUserId(String blog_user) {
+		int ret = this.blogDao.selectAllBlogsCountByUserId(blog_user);
+		return ret;
+	}
 }

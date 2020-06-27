@@ -61,9 +61,13 @@
 										</li>
 									</c:if>
 									<li class="">
-										<a href="" data-hover="<font color=red>${currentUser.user_name }</font>">
-											<font color=red>${currentUser.user_name }</font>
-										</a>
+										<c:if test="${currentUser!=null }">
+											<a href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${currentUser.user_name}" data-hover="<font color=red>${currentUser.user_name }</font>">
+												<font color=red>
+													用户：${currentUser.user_name }
+												</font>
+											</a>
+										</c:if>
 									</li>
 									<li>
 										<c:if test="${currentUser==null&&admin!=null }">
@@ -131,7 +135,18 @@
 					</main>
 					<aside class="col-md-4">
 						<div class="widget widget-recent-posts">
-							<h3 class="widget-title">最新消息</h3> 请登录后查看
+							<h3 class="widget-title">探索</h3>
+							<ul>
+								<li>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[0].blog_id}">${exploreBlogs[0].blog_title}</a>
+								</li>
+								<li>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[1].blog_id}">${exploreBlogs[1].blog_title}</a>
+								</li>
+								<li>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[2].blog_id}">${exploreBlogs[2].blog_title}</a>
+								</li>
+							</ul>
 						</div>
 
 						<div class="widget widget-category">

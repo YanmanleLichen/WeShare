@@ -8,6 +8,16 @@
 	<select id="selectAllBlogs" resultType="com.ws.po.Blog" >
 		SELECT * FROM blog order by blog_time desc
 	</select>
+	<select id="selectAllBlogsByUserId" resultType="com.ws.po.Blog" >
+		SELECT * FROM blog
+		where blog_user=#{blog_user}
+		order by blog_time desc limit #{start}, #{size}
+	</select>
+	<select id="selectAllBlogsCountByUserId" resultType="int" >
+		SELECT count(*) FROM blog
+		where blog_user=#{blog_user}
+		order by blog_time desc
+	</select>
 	<select id="selectBlogsLikeSearchList" resultType="com.ws.po.Blog" >
 		SELECT * FROM blog where 
 		CONCAT(IFNULL(blog_user,''), IFNULL(blog_title,''))

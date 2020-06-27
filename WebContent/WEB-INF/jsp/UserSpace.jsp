@@ -33,7 +33,14 @@
 	<body id="page-top">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
 			<a target="_blanck" class="navbar-brand js-scroll-trigger" href="https://github.com/YanmanleLichen">
-				<img class="img-fluser_id img-profile rounded-circle mx-auto mb-2" src="${pageContext.request.contextPath}/img/tx.jpg" alt="${SpaceUser.user_name }" />
+				<c:if test="${SpaceUser.gender=='男' }">
+					<img class="img-fluser_id img-profile rounded-circle mx-auto mb-2" 
+						src="${pageContext.request.contextPath}/img/m.jpg" alt="${SpaceUser.user_name }" />
+				</c:if>
+				<c:if test="${SpaceUser.gender=='女' }">
+					<img class="img-fluser_id img-profile rounded-circle mx-auto mb-2" 
+						src="${pageContext.request.contextPath}/img/f.jpg" alt="${SpaceUser.user_name }" />
+				</c:if>
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -44,13 +51,13 @@
 						<a class="nav-link js-scroll-trigger" href="#about">个人信息</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link js-scroll-trigger" href="#blogs">我的帖子</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link js-scroll-trigger" href="#following">我的关注</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link js-scroll-trigger" href="#followers">我的粉丝</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link js-scroll-trigger" href="#blogs">我的帖子</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link js-scroll-trigger" href="${pageContext.request.contextPath}/toCenter.action">返回广场</a>
@@ -101,7 +108,66 @@
 				</div>
 			</section>
 			<section class="resume-section p-3 p-lg-5 d-flex d-column" id="blogs">
-				
+				<table id="demo" lay-filter="test"></table>
+				<input type="hidden" name="type" id="blog_user" value="${SpaceUser.user_name }" />
+				<script>
+					var blog_user = document.getElementById("blog_user").value;
+					console.log("blog_user: " + blog_user);
+					layui.use('table', function() {
+						var table = layui.table;
+						//第一个实例
+						table.render({
+							elem: '#demo'
+								//,height: 600
+								,
+							skin: 'nob',
+							even: false,
+							size: 'lg',
+							url: '${pageContext.request.contextPath}/selectAllBlogsByUserId.action?blog_user=' + blog_user //数据接口
+								,
+							page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+								layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] //自定义分页布局
+									,
+								groups: 5,
+								first: '首页',
+								prev: '上一页',
+								next: '下一页',
+								last: '尾页',
+								limit: 10,
+								limits: [5, 10, 15]
+							},
+							cols: [
+								[{
+									field: 'blog_title',
+									title: '标题',
+									width: 380,
+									fixed: 'left'
+								}, {
+									field: 'blog_type',
+									title: '类型',
+									width: 100
+								}, {
+									field: 'blog_user',
+									title: '发布者',
+									width: 75
+								}, {
+									field: 'blog_time',
+									title: '最后更新时间',
+									width: 175
+								}, {
+									field: 'blog_id',
+									title: '帖子ID',
+									width: 350
+								}]
+							]
+						});
+						table.on('row(test)', function(obj) {
+							console.log(obj.tr) //得到当前行元素对象
+							console.log(obj.data) //得到当前行数据
+							window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
+						});
+					})
+				</script>
 			</section>
 		</div>
 		<!-- Bootstrap core JavaScript -->

@@ -168,16 +168,16 @@
 					</main>
 					<aside class="col-md-4">
 						<div class="widget widget-recent-posts">
-							<h3 class="widget-title">最新消息</h3>
+							<h3 class="widget-title">探索</h3>
 							<ul>
 								<li>
-									<a href=""></a>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[0].blog_id}">${exploreBlogs[0].blog_title}</a>
 								</li>
 								<li>
-									<a href=""></a>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[1].blog_id}">${exploreBlogs[1].blog_title}</a>
 								</li>
 								<li>
-									<a href=""></a>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[2].blog_id}">${exploreBlogs[2].blog_title}</a>
 								</li>
 							</ul>
 						</div>

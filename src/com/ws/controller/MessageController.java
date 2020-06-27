@@ -1,9 +1,7 @@
 package com.ws.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,6 +44,8 @@ public class MessageController {
 		blog.setBlog_time(blog_time);
 		session.setAttribute("b", blog);
 		session.setAttribute("messages", messages1);
+		List<Blog> blogs = ExploreBlogs();
+		session.setAttribute("exploreBlogs", blogs);
 		if(!messages.isEmpty()) {
 			return "Details";
 		}
@@ -85,5 +85,26 @@ public class MessageController {
 		}
 		model.addAttribute("msg", "评论失败！");
 		return "redirect:/selectBlogByBlogId.action?blog_id=" + blog_id;
+	}
+	public List<Blog> ExploreBlogs(){
+		List<Blog> blogs1 = blogService.selectAllBlogs();
+		List<Blog> blogs2 = blogService.selectAllBlogs();
+		List<Integer> list = new ArrayList<>();
+		blogs2.clear();
+		int count = blogs1.size();
+		Random random = new Random();
+		for(int i = 0; i > -1; i++){
+			int r = random.nextInt(count);
+			if(list.indexOf(r) < 0){
+				blogs2.add(blogs1.get(r));
+				list.add(r);
+			}
+			if(list.size() == 3){
+				break;
+			}
+		}
+		logger.info(blogs2);
+		list.clear();
+		return blogs2;
 	}
 }

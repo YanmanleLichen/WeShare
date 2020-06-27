@@ -109,68 +109,70 @@
 						<hr>
 						<br />
 						<div class="layui-input-block" style="margin-left: 0px;">
-							<input id="search" name="search" lay-verify="title" 
-								style="margin-right:10px;float:left;width: 600px;"
-								autocomplete="off" placeholder="请输入" class="layui-input">
+							<input id="search" name="search" value=""
+							lay-verify="title" style="margin-right:10px;float:left;width: 600px;" 
+							autocomplete="off" placeholder="请输入" class="layui-input"/>
 							<button style="width:140px;float: right;" 
-								class="layui-btn" lay-filter="formDemo" onclick="analysis()">查找</button>
+							class="layui-btn" lay-filter="formDemo" onclick="search()">查找</button>
 						</div>
 						<br />
 						<table id="demo" lay-filter="test"></table>
-						<input type="hidden" name="type" id="type" value="${blog_type }" />
 						<script>
-							var blog_type = document.getElementById("type").value;
-							console.log("blog_type: " + blog_type);
-							layui.use('table', function() {
-								var table = layui.table;
-								//第一个实例
-								table.render({
-									elem: '#demo'
-										//,height: 600
-										,
-									skin: 'nob',
-									even: false,
-									size: 'lg',
-									url: '${pageContext.request.contextPath}/selectAllBlogsList.action?blog_type=' + blog_type //数据接口
-										,
-									page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-										layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] //自定义分页布局
+							search();
+							function search() {
+								var search = $("#search").val();
+								console.log("search: " + search);
+								layui.use('table', function() {
+									var table = layui.table;
+									//第一个实例
+									table.render({
+										elem: '#demo'
+											//,height: 600
 											,
-										groups: 5,
-										first: '首页',
-										prev: '上一页',
-										next: '下一页',
-										last: '尾页',
-										limit: 10,
-										limits: [5, 10, 15]
-									},
-									cols: [
-										[{
-											field: 'blog_title',
-											title: '标题',
-											width: 380,
-											fixed: 'left'
-										}, {
-											field: 'blog_type',
-											title: '类型',
-											width: 100
-										}, {
-											field: 'blog_user',
-											title: '发布者',
-											width: 75
-										}, {
-											field: 'blog_time',
-											title: '最后更新时间',
-											width: 175
-										}]
-									]
-								});
-								table.on('row(test)', function(obj) {
-									console.log(obj.tr) //得到当前行元素对象
-									console.log(obj.data) //得到当前行数据
-									window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
-								});
-							});
+										skin: 'nob',
+										even: false,
+										size: 'lg',
+										url: '${pageContext.request.contextPath}/selectBlogsLikeSearch.action?search=' + search //数据接口
+											,
+										page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+											layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] //自定义分页布局
+												,
+											groups: 5,
+											first: '首页',
+											prev: '上一页',
+											next: '下一页',
+											last: '尾页',
+											limit: 10,
+											limits: [5, 10, 15]
+										},
+										cols: [
+											[{
+												field: 'blog_title',
+												title: '标题',
+												width: 380,
+												fixed: 'left'
+											}, {
+												field: 'blog_type',
+												title: '类型',
+												width: 100
+											}, {
+												field: 'blog_user',
+												title: '发布者',
+												width: 75
+											}, {
+												field: 'blog_time',
+												title: '最后更新时间',
+												width: 175
+											}]
+										]
+									});
+									table.on('row(test)', function(obj) {
+										console.log(obj.tr) //得到当前行元素对象
+										console.log(obj.data) //得到当前行数据
+										window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
+									});
+								})
+							}
 						</script>
 						<h2><font color=red>${msg}</font></h2>
 						<hr />
@@ -178,17 +180,17 @@
 
 					<aside class="col-md-4">
 						<div class="widget widget-recent-posts">
-							<h3 class="widget-title">最新消息</h3>
+							<h3 class="widget-title">探索</h3>
 							<ul>
-								<!-- <li>
-									<a href=""></a>
+								<li>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[0].blog_id}">${exploreBlogs[0].blog_title}</a>
 								</li>
 								<li>
-									<a href=""></a>
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[1].blog_id}">${exploreBlogs[1].blog_title}</a>
 								</li>
 								<li>
-									<a href=""></a>
-								</li> -->
+									<a href="http://localhost:8080/WeShare/selectMessagesByBlogId.action?blog_id=${exploreBlogs[2].blog_id}">${exploreBlogs[2].blog_title}</a>
+								</li>
 							</ul>
 						</div>
 

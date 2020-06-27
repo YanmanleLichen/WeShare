@@ -16,4 +16,6 @@ public interface BlogService {
 	public int updateBlogByBlogId(String blog_id,String blog_title,String blog_content);
 	public List<Blog> selectBlogsLikeSearchList(String search, int start, int size);
 	public int selectBlogsLikeSearchListCount(String search);
+	public List<Blog> selectAllBlogsByUserId(String blog_user, int start, int size);
+	public int selectAllBlogsCountByUserId(String blog_user);
 }

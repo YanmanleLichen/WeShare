@@ -27,18 +27,12 @@ public class BlogController {
 	@Autowired
 	private BlogService blogService;
 	@RequestMapping(value = "/selectBlogByBlogId.action")
-	public String selectBlogBybId(Model model, HttpSession session, String blog_id) {
+	public String selectBlogBybId(String blog_id) {
 		return "redirect:/selectMessagesByBlogId.action?blog_id=" + blog_id;
 	}
 	
-	@RequestMapping(value = "/toSection.action")
-	public String toSection(Model model, HttpSession session, String blog_type) {
-		model.addAttribute("blog_type", blog_type);
-		return "Section";
-	}
-	
 	@RequestMapping(value = "/insertBlog.action")
-	public String insertBlog(Model model, HttpSession session, String blog_title,
+	public String insertBlog(HttpSession session, String blog_title,
 			String blog_content, String blog_type) {
 		String blog_id = UUID.randomUUID().toString().replace("-", "");
 		Date bTime = new Date();
@@ -54,7 +48,7 @@ public class BlogController {
 		return "AddBlog";
 	}
 	@RequestMapping(value = "/insertAdminBlog.action")
-	public String insertAdminBlog(Model model, HttpSession session, String blog_title,
+	public String insertAdminBlog(HttpSession session, String blog_title,
 			String blog_content) {
 		String blog_id = UUID.randomUUID().toString().replace("-", "");
 		Date bTime = new Date();
@@ -73,7 +67,7 @@ public class BlogController {
 	
 	@RequestMapping(value = "/selectBlogsLikeSearch.action", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String selectBlogsLikeSearch(Model model, HttpSession session, HttpServletRequest request) {
+	public JSONObject selectBlogsLikeSearch(HttpServletRequest request) {
 		String search = request.getParameter("search");
 		int size = Integer.parseInt(request.getParameter("limit"));
 		int start = (Integer.parseInt(request.getParameter("page")) - 1) * size;
@@ -85,16 +79,15 @@ public class BlogController {
 			blog.setBlog_content("0");
 			String time = blog.getBlog_time().substring(0, 19);
 			blog.setBlog_time(time);
-			System.out.println(blog.toString());
 			blogs1.add(i, blog);
-			System.out.println(blogs1.toString());
 		}
 		int ret = blogService.selectBlogsLikeSearchListCount(search);
-		logger.info(blogs);
-		if(blogs.isEmpty()) {
-			return "{ \"code\":0,\"msg\":\"成功\",\"count\":" + ret + ",\"data\":" +  blogs1.toString() + "}";
-		}
-		return "{ \"code\":0,\"msg\":\"成功\",\"count\":" + ret + ",\"data\":" +  blogs1.toString() + "}";
+		JSONObject allblogs = new JSONObject();
+		allblogs.put("code", 0);
+		allblogs.put("msg", "成功");
+		allblogs.put("count", ret);
+		allblogs.put("data", blogs1);
+		return allblogs;
 	}
 	@RequestMapping(value="/selectAllBlogsList.action", produces = "application/json;charset=utf-8")
     @ResponseBody
@@ -120,8 +113,33 @@ public class BlogController {
 		allblogs.put("data", blogs1);
 		return allblogs;
 	}
+	@RequestMapping(value="/selectAllBlogsByUserId.action", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public JSONObject selectAllBlogsByUserId(HttpServletRequest request){
+		String blog_user = request.getParameter("blog_user");
+		int size = Integer.parseInt(request.getParameter("limit"));
+		int start = (Integer.parseInt(request.getParameter("page")) - 1) * size;
+		int ret = blogService.selectAllBlogsCountByUserId(blog_user);
+		List<Blog> blogs = blogService.selectAllBlogsByUserId(blog_user, start, size);
+		List<Blog> blogs1 = blogService.selectAllBlogsByUserId(blog_user, start, size);
+		blogs1.clear();
+		for(int i = 0;i < blogs.size(); i++) {
+			Blog blog = blogs.get(i);
+			blog.setBlog_content("0");
+			String time = blog.getBlog_time().substring(0, 19);
+			blog.setBlog_time(time);
+			blogs1.add(i, blog);
+		}
+		JSONObject allblogs = new JSONObject();
+		allblogs.put("code", 0);
+		allblogs.put("msg", "成功");
+		allblogs.put("count", ret);
+		allblogs.put("data", blogs1);
+		return allblogs;
+	}
+
 	@RequestMapping(value = "/deleteBlogByBlogId.action")
-	public String deleteBlogBybId(Model model, HttpSession session, String blog_id) {
+	public String deleteBlogBybId(HttpSession session, String blog_id) {
 		int ret = blogService.deleteBlogByBlogId(blog_id);
 		System.out.println(ret);
 		if(ret > 0) {
