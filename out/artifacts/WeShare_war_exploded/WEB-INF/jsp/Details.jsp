@@ -51,7 +51,10 @@
 										<a href="${pageContext.request.contextPath}/toCenter.action" data-hover="广场">广场</a>
 									</li>
 									<li class="cl-effect-11">
-										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索" target="_blank">搜索</a>
+										<a href="${pageContext.request.contextPath}/toFollowUserBlog.action" data-hover="关注">关注</a>
+									</li>
+									<li class="cl-effect-11">
+										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索">搜索</a>
 									</li>
 									<c:if test="${currentUser!=null ||admin!=null}">
 										<li class="cl-effect-11">
@@ -119,16 +122,14 @@
 								</div>
 								<div class="entry-meta">
 									<span class="post-date">
-										<a href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">
+										<a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">
 											最后更新时间：${b.blog_time }
 												<time class="entry-date" datetime="2012-11-09T23:15:57+00:00">
                                                 </time>
                                         </a>
                                     </span>
-									<span class="post-author"><a href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">发布者：${b.blog_user }</a></span>
-
+									<span class="post-author"><a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">发布者：${b.blog_user }</a></span>
 								</div>
-
 							</header>
 							<div class="entry-content clearfix">
 								<blockquote>
@@ -155,7 +156,11 @@
 								<h3>评论列表</h3>
 								<h2><font color=red>${msg}</font></h2>
 								<c:forEach items="${messages }" var="m">
-									<div style="float:left;">${m.msg_user } ${m.msg_time }</div>
+									<div style="float:left;">
+										<a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${m.msg_user }">
+											<font color=red>${m.msg_user }</font> ${m.msg_time }
+										</a>
+									</div>
 									<div style="float:right;">
 										<c:if test="${m.msg_user==currentUser.user_name||admin!=null }">
 											<a href="${pageContext.request.contextPath}/deleteMessageByMsgId.action?msg_id=${m.msg_id}&blog_id=${m.blog_id}">删除评论</a>

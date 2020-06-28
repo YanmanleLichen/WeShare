@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ws.dao.RelationDao">
+    <insert id="focusOnUserByUserId" parameterType="com.ws.po.Relation">
+        INSERT INTO relation
+        VALUES (#{relation_id}, #{user_id}, #{follow_user_id}, #{follow_time})
+    </insert>
+    <delete id="unFollowUserByUserId" parameterType="String" >
+        DELETE FROM relation
+        WHERE user_id=#{user_id} AND follow_user_id=#{follow_user_id}
+    </delete>
+    <select id="followOrNot" parameterType="String" resultType="int">
+        SELECT count(*) FROM relation
+        WHERE user_id=#{user_id} AND follow_user_id=#{follow_user_id}
+    </select>
+    <select id="selectRelationsByUserId" resultType="com.ws.po.Relation">
+        SELECT * FROM relation
+        WHERE user_id=#{user_id}
+        order by follow_time desc limit #{start}, #{size}
+    </select>
+    <select id="selectRelationsByUserIdCount" parameterType="String" resultType="int">
+        SELECT count(*) FROM relation
+        WHERE user_id=#{user_id}
+    </select>
+    <select id="selectRelationsByFollowUserId" resultType="com.ws.po.Relation">
+        SELECT * FROM relation
+        WHERE follow_user_id=#{follow_user_id}
+        order by follow_time desc limit #{start}, #{size}
+    </select>
+    <select id="selectRelationsByFollowUserIdCount" parameterType="String" resultType="int">
+        SELECT count(*) FROM relation
+        WHERE follow_user_id=#{follow_user_id}
+    </select>
+    <select id="selectFollowUserBlogsByUserId" resultType="com.ws.po.Blog">
+        SELECT * FROM blog
+        WHERE blog_user = any(
+        SELECT user.user_name from user
+        WHERE user_id = any(
+        SELECT relation.follow_user_id from relation
+        WHERE user_id = #{user_id}))
+        order by blog_time desc limit #{start}, #{size}
+    </select>
+    <select id="selectFollowUserBlogsByUserIdCount" parameterType="String" resultType="int">
+        SELECT count(*) FROM blog
+        WHERE blog_user = any(
+        SELECT user.user_name from user
+        WHERE user_id = any(SELECT relation.follow_user_id from relation WHERE user_id=#{user_id}))
+    </select>
+</mapper>

@@ -53,7 +53,10 @@
 										<a href="${pageContext.request.contextPath}/toCenter.action" data-hover="广场">广场</a>
 									</li>
 									<li class="cl-effect-11">
-										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索" target="_blank">搜索</a>
+										<a href="${pageContext.request.contextPath}/toFollowUserBlog.action" data-hover="关注">关注</a>
+									</li>
+									<li class="cl-effect-11">
+										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索">搜索</a>
 									</li>
 									<c:if test="${currentUser!=null ||admin!=null}">
 										<li class="cl-effect-11">
@@ -86,8 +89,8 @@
 										<div>
 											<select name="blog_type">
   												<option value="">请选择类型</option>
-  												<option value="校园新闻">校园新闻</option>
   												<option value="综合信息">综合信息</option>
+  												<option value="校园新闻">校园新闻</option>
   												<option value="美食交流">美食交流</option>
   												<option value="游戏交流">游戏交流</option>
   												<option value="学习交流">学习交流</option>

@@ -17,12 +17,18 @@ public class Message {
 		this.msg_time = msg_time;
 		this.msg_content = msg_content;
 	}
+
 	@Override
 	public String toString() {
-		return "Message [msg_id=" + msg_id + ", blog_id=" + blog_id + ", msg_user=" + msg_user + ", msg_time="
-				+ msg_time + ", msg_content=" + msg_content + "]";
+		return "Message{" +
+				"msg_id='" + msg_id + '\'' +
+				", blog_id='" + blog_id + '\'' +
+				", msg_user='" + msg_user + '\'' +
+				", msg_time='" + msg_time + '\'' +
+				", msg_content='" + msg_content + '\'' +
+				'}';
 	}
-	
+
 	public String getMsg_id() {
 		return msg_id;
 	}

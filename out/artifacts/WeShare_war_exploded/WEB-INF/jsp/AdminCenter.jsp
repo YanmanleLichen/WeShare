@@ -43,7 +43,7 @@
 						管理员：${admin.admin_name }，您好
 					</li>
 					<li class="nav-item">
-						<a class="nav-link js-scroll-trigger" href="#market">用户管理</a>
+						<a class="nav-link js-scroll-trigger" href="#manage">用户管理</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link js-scroll-trigger" href="${pageContext.request.contextPath}/toCenter.action">进入广场</a>
@@ -56,9 +56,9 @@
 		</nav>
 
 		<div class="container-fluid p-0">
-			<section class="resume-section p-3 p-lg-5 d-flex flex-column" id="market">
+			<section class="resume-section p-3 p-lg-5 d-flex flex-column" id="manage">
 				<div>
-					<a href="${pageContext.request.contextPath}/toAddAdminBlog.action#market" class="layui-btn layui-btn-radius">发表公告</a>
+					<a href="${pageContext.request.contextPath}/toAddAdminBlog.action" class="layui-btn layui-btn-radius">发表公告</a>
 				</div>
 				<table id="demo" lay-filter="test"></table>
 

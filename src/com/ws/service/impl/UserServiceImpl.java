@@ -3,6 +3,7 @@ package com.ws.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.ws.dao.UserDao;
 import com.ws.po.User;
 import com.ws.service.UserService;
@@ -58,4 +59,5 @@ public class UserServiceImpl implements UserService{
 		int ret = this.userDao.selectUsersListCount();
 		return  ret;
 	}
+
 }

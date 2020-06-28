@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSONObject;
+
+import com.ws.po.Blog;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ws.po.User;
 import com.ws.service.UserService;
+import com.ws.po.Relation;
+import com.ws.service.RelationService;
 
 @Controller
 public class UserController {
 	Logger logger = Logger.getLogger(UserController.class);
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RelationService relationService;
 	@RequestMapping(value = "/Login.action", method = RequestMethod.POST)
 	public String login(String user_name, String password, Model model, HttpSession session) {
 		User user = userService.selectUserByUserNamePassword(user_name, password);
@@ -42,12 +48,12 @@ public class UserController {
 
 	@RequestMapping(value = "/Regist.action", method = RequestMethod.POST)
 	public String regist(Model model, String user_name, String password, String gender,
-			String description,String identity,HttpServletRequest request) {
+			String description,String identity) {
 		String user_id = UUID.randomUUID().toString().replace("-", "");
 		Date registdate = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String bT = sdf.format(registdate);
-		String user_state = "正常";
+		String user_state = "t";
 		int ret = userService.insertUser(user_id, user_name, password, gender, description, bT, identity, user_state);
 		if(ret > 0 ) {
 			return "Login";
@@ -77,8 +83,22 @@ public class UserController {
 		return "redirect:/toLogin.action";
 	}
 	@RequestMapping(value = "/toUserSpace.action")
-	public String toUserSpace(HttpSession session, Model model, String user_name) {
+	public String toUserSpace(HttpSession session, String user_name) {
+		User currentUser =(User)session.getAttribute("currentUser");
 		User user = userService.selectUserByUserName(user_name);
+		int canFollow = -1;
+		if(currentUser != null){
+			int ret = relationService.followOrNot(currentUser.getUser_id(), user.getUser_id());
+			if(ret == 1){
+				canFollow = 0;
+			}
+			else {
+				canFollow = 1;
+			}
+		}
+		session.setAttribute("canFollow", canFollow);
+		String time = user.getRegistdate().substring(0, 19);
+		user.setRegistdate(time);
 		session.setAttribute("SpaceUser", user);
 		return "UserSpace";
 	}
@@ -160,5 +180,108 @@ public class UserController {
 		allusers.put("count", ret);
 		allusers.put("data", users1);
 		return allusers;
+	}
+
+	@RequestMapping(value = "/focusOnUserByUserId.action")
+	public String focusOnUserByUserId(HttpSession session, String user_id, String follow_user_id){
+		String relation_id = UUID.randomUUID().toString().replace("-", "");
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String follow_time = sdf.format(date);
+		User user = userService.selectUserByUserId(follow_user_id);
+		int ret = relationService.focusOnUserByUserId(relation_id, user_id, follow_user_id,follow_time);
+		if(ret > 0){
+			return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+		}
+		session.setAttribute("msg", "关注失败！");
+		return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+	}
+	@RequestMapping(value = "/unFollowUserByUserId.action")
+	public String unFollowUserByUserId(HttpSession session, String user_id, String follow_user_id){
+		User user = userService.selectUserByUserId(follow_user_id);
+		int ret = relationService.unFollowUserByUserId(user_id, follow_user_id);
+		if(ret > 0){
+			return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+		}
+		session.setAttribute("msg", "取关失败！");
+		return "redirect:/toUserSpace.action?user_name=" + user.getUser_name();
+	}
+
+	@RequestMapping(value = "/selectRelationsByUserId.action", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public JSONObject selectRelationsByUserId(HttpServletRequest request){
+		String user_id = request.getParameter("user_id");
+		int size = Integer.parseInt(request.getParameter("limit"));
+		int start = (Integer.parseInt(request.getParameter("page")) - 1) * size;
+		int ret = relationService.selectRelationsByUserIdCount(user_id);
+		List<Relation> relations = relationService.selectRelationsByUserId(user_id, start, size);
+		List<Relation> relations1 = relationService.selectRelationsByUserId(user_id, start, size);
+		relations1.clear();
+		for(int i = 0; i < relations.size(); i++){
+			Relation relation = relations.get(i);
+			User user = userService.selectUserByUserId(relation.getFollow_user_id());
+			relation.setUser_id(user.getUser_name());
+			String time = relation.getFollow_time().substring(0, 19);
+			relation.setFollow_time(time);
+			relations1.add(i, relation);
+		}
+		JSONObject allrelations = new JSONObject();
+		allrelations.put("code", 0);
+		allrelations.put("msg", "成功");
+		allrelations.put("count", ret);
+		allrelations.put("data", relations1);
+		return allrelations;
+	}
+
+	@RequestMapping(value = "/selectRelationsByFollowUserId.action", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public JSONObject selectRelationsByFollowUserId(HttpServletRequest request){
+		String follow_user_id = request.getParameter("follow_user_id");
+		int size = Integer.parseInt(request.getParameter("limit"));
+		int start = (Integer.parseInt(request.getParameter("page")) - 1) * size;
+		int ret = relationService.selectRelationsByFollowUserIdCount(follow_user_id);
+		List<Relation> relations = relationService.selectRelationsByFollowUserId(follow_user_id, start, size);
+		List<Relation> relations1 = relationService.selectRelationsByFollowUserId(follow_user_id, start, size);
+		relations1.clear();
+		for(int i = 0; i < relations.size(); i++){
+			Relation relation = relations.get(i);
+			User user = userService.selectUserByUserId(relation.getUser_id());
+			relation.setFollow_user_id(user.getUser_name());
+			String time = relation.getFollow_time().substring(0, 19);
+			relation.setFollow_time(time);
+			relations1.add(i, relation);
+		}
+		JSONObject allrelations = new JSONObject();
+		allrelations.put("code", 0);
+		allrelations.put("msg", "成功");
+		allrelations.put("count", ret);
+		allrelations.put("data", relations1);
+		return allrelations;
+	}
+
+	@RequestMapping(value = "/selectFollowUserBlogsByUserId.action", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public JSONObject selectFollowUserBlogsByUserId(HttpServletRequest request){
+		String user_id = request.getParameter("user_id");
+		int size = Integer.parseInt(request.getParameter("limit"));
+		int start = (Integer.parseInt(request.getParameter("page")) - 1) * size;
+		int ret = relationService.selectFollowUserBlogsByUserIdCount(user_id);
+		List<Blog> blogs = relationService.selectFollowUserBlogsByUserId(user_id, start, size);
+		logger.info(blogs);
+		List<Blog> blogs1 = relationService.selectFollowUserBlogsByUserId(user_id, start, size);
+		blogs1.clear();
+		for (int i = 0; i < blogs.size(); i++) {
+			Blog blog = blogs.get(i);
+			blog.setBlog_content("0");
+			String time = blog.getBlog_time().substring(0, 19);
+			blog.setBlog_time(time);
+			blogs1.add(i, blog);
+		}
+		JSONObject allblogs = new JSONObject();
+		allblogs.put("code", 0);
+		allblogs.put("msg", "成功");
+		allblogs.put("count", ret);
+		allblogs.put("data", blogs1);
+		return allblogs;
 	}
 }

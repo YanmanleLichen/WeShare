@@ -20,11 +20,19 @@ public class Blog {
 		this.blog_type = blog_type;
 		this.blog_content = blog_content;
 	}
+
 	@Override
 	public String toString() {
-		return "Blog [blog_id=" + blog_id + ", blog_time=" + blog_time + ", blog_user=" + blog_user + ", blog_title="
-				+ blog_title + ", blog_type=" + blog_type + ", blog_content=" + blog_content + "]";
+		return "Blog{" +
+				"blog_id='" + blog_id + '\'' +
+				", blog_time='" + blog_time + '\'' +
+				", blog_user='" + blog_user + '\'' +
+				", blog_title='" + blog_title + '\'' +
+				", blog_type='" + blog_type + '\'' +
+				", blog_content='" + blog_content + '\'' +
+				'}';
 	}
+
 	public String getBlog_id() {
 		return blog_id;
 	}

@@ -59,7 +59,10 @@
 										<a href="${pageContext.request.contextPath}/toCenter.action" data-hover="广场">广场</a>
 									</li>
 									<li class="cl-effect-11">
-										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索" target="_blank">搜索</a>
+										<a href="${pageContext.request.contextPath}/toFollowUserBlog.action" data-hover="关注">关注</a>
+									</li>
+									<li class="cl-effect-11">
+										<a href="${pageContext.request.contextPath}/toSearch.action" data-hover="搜索">搜索</a>
 									</li>
 									<c:if test="${currentUser!=null ||admin!=null}">
 										<li class="cl-effect-11">

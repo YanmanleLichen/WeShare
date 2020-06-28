@@ -24,12 +24,21 @@ public class User {
 		this.identity = identity;
 		this.user_state = user_state;
 	}
+
 	@Override
 	public String toString() {
-		return "User [user_id=" + user_id + ", user_name=" + user_name + ", password=" + password + ", gender=" + gender
-				+ ", description=" + description + ", registdate=" + registdate + ", identity=" + identity
-				+ ", user_state=" + user_state + "]";
+		return "User{" +
+				"user_id='" + user_id + '\'' +
+				", user_name='" + user_name + '\'' +
+				", password='" + password + '\'' +
+				", gender='" + gender + '\'' +
+				", description='" + description + '\'' +
+				", registdate='" + registdate + '\'' +
+				", identity='" + identity + '\'' +
+				", user_state='" + user_state + '\'' +
+				'}';
 	}
+
 	public String getUser_id() {
 		return user_id;
 	}

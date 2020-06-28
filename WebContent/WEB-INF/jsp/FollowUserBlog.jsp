@@ -5,7 +5,7 @@
 <html>
 
 	<head>
-		<title>${b.blog_title }</title>
+		<title>闻说 - 我的关注</title>
 
 		<!-- meta -->
 		<meta charset="UTF-8">
@@ -16,24 +16,25 @@
 		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pace.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/custom.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css" media="all">
 
 		<!-- js -->
 		<script src="${pageContext.request.contextPath}/js/jquery-2.1.3.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/pace.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/modernizr.custom.js"></script>
+		<script src="${pageContext.request.contextPath}/layui/layui.js"></script>
 	</head>
 
-	<body id="single">
+	<body>
 		<div class="container">
 			<header id="site-header">
 				<div class="row">
 					<div class="col-md-4 col-sm-5 col-xs-8">
 						<div class="logo">
-							<h1><a href=""><b>${b.blog_title }</a></h1>
+							<h1><a href="${pageContext.request.contextPath}/toCenter.action"><b>闻说 - 我的关注</a></h1>
 						</div>
 					</div>
-					<!-- col-md-4 -->
 					<div class="col-md-8 col-sm-7 col-xs-4">
 						<nav class="main-nav" role="navigation">
 							<div class="navbar-header">
@@ -72,7 +73,7 @@
 									</li>
 									<li>
 										<c:if test="${currentUser==null }">
-											<a href="${pageContext.request.contextPath}/toAdminCenter.action" data-hover="${admin.admin_name }">
+											<a href="${pageContext.request.contextPath}/toAdminCenter.action?user_name=${admin.admin_name}" data-hover="${admin.admin_name}">
 												<font color=red>
 													管理员：${admin.admin_name }
 												</font>
@@ -81,9 +82,7 @@
 									</li>
 								</ul>
 							</div>
-							<!-- /.navbar-collapse -->
 						</nav>
-
 					</div>
 				</div>
 			</header>
@@ -93,84 +92,83 @@
 			<div class="container">
 				<div class="row">
 					<main class="col-md-8">
-						<article class="post post-1">
-							<header class="entry-header">
-								<c:if test="${b.blog_user==currentUser.user_name&&admin==null }">
-									<div style="float:right;">
-										<a href="${pageContext.request.contextPath}/toUpdateBlog.action?blog_id=${b.blog_id}">
-											<font color=gray size=2sp>
-												编辑文章
-											</font>
-										</a>
-
-										<a href="${pageContext.request.contextPath}/deleteBlogByBlogId.action?blog_id=${b.blog_id}">
-											<font color=gray size=2sp>
-												删除文章
-											</font>
-										</a>
-									</div>
-								</c:if>
-								<c:if test="${admin!=null }">
-									<a href="${pageContext.request.contextPath}/deleteBlogByBlogId.action?blog_id=${b.blog_id}">
-										<font color=gray size=2sp>
-											删除文章
-										</font>
-									</a>
-								</c:if>
-								<div style="float:center;">
-									<h1 class="entry-title">${b.blog_title }</h1>
-								</div>
-								<div class="entry-meta">
-									<span class="post-date">
-										<a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">
-											最后更新时间：${b.blog_time }
-												<time class="entry-date" datetime="2012-11-09T23:15:57+00:00">
-                                                </time>
-                                        </a>
-                                    </span>
-									<span class="post-author"><a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">发布者：${b.blog_user }</a></span>
-								</div>
-							</header>
-							<div class="entry-content clearfix">
-								<blockquote>
-									<p>
-										${b.blog_content }
-									</p>
-								</blockquote>
-							</div>
-						</article>
-						<section class="comment-area" id="comment-area">
-							<hr>
-							<h3>发表评论</h3>
-							<form action="${pageContext.request.contextPath}/insertMessage.action" method="post" class="comment-form">
-								<div class="row">
-									<div class="col-md-12">
-										<label for="id_comment">评论：</label>
-										<textarea name="msg_content" id="id_comment" required></textarea>
-										<button type="submit" class="comment-btn">发表</button>
-									</div>
-								</div>
-								<!-- row -->
-							</form>
-							<div class="comment-list-panel">
-								<h3>评论列表</h3>
-								<h2><font color=red>${msg}</font></h2>
-								<c:forEach items="${messages }" var="m">
-									<div style="float:left;">
-										<a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${m.msg_user }">
-											<font color=red>${m.msg_user }</font> ${m.msg_time }
-										</a>
-									</div>
-									<div style="float:right;">
-										<c:if test="${m.msg_user==currentUser.user_name||admin!=null }">
-											<a href="${pageContext.request.contextPath}/deleteMessageByMsgId.action?msg_id=${m.msg_id}&blog_id=${m.blog_id}">删除评论</a>
-										</c:if>
-									</div><br/> ${m.msg_content }
-									<hr/>
-								</c:forEach>
-							</div>
-						</section>
+						欢迎您，
+						<a href="${pageContext.request.contextPath}/toUserSpace.action">
+							<font color="red">${currentUser.user_name }</font>
+						</a>
+						<c:if test="${currentUser==null }">
+							<font color=red>
+								管理员：${admin.admin_name }
+							</font>
+						</c:if>
+						<c:if test="${currentUser.identity=='outside' }">校外人士</c:if>
+						<c:if test="${currentUser.identity=='inside' }">本校师生</c:if>
+						<c:if test="${admin==null }">
+							<a href="${pageContext.request.contextPath}/toAddBlog.action">
+								<div style="float:right;">[发布信息]&nbsp;&nbsp;&nbsp;</div>
+							</a>
+						</c:if>
+						<hr>
+						<br />
+						<table id="demo" lay-filter="test"></table>
+						<input type="hidden" name="type" id="user_id" value="${currentUser.user_id }" />
+						<script>
+							var user_id = document.getElementById("user_id").value;
+							console.log("user_id: " + user_id);
+							layui.use('table', function() {
+								var table = layui.table;
+								//第一个实例
+								table.render({
+									elem: '#demo'
+										//,height: 600
+										,
+									skin: 'nob',
+									even: false,
+									size: 'lg',
+									url: '${pageContext.request.contextPath}/selectFollowUserBlogsByUserId.action?user_id=' + user_id,
+									page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+										layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] //自定义分页布局
+											,
+										groups: 5,
+										first: '首页',
+										prev: '上一页',
+										next: '下一页',
+										last: '尾页',
+										limit: 10,
+										limits: [5, 10, 15]
+									},
+									cols: [
+										[{
+											field: 'blog_title',
+											title: '标题',
+											width: 380,
+											fixed: 'left'
+										}, {
+											field: 'blog_type',
+											title: '类型',
+											width: 100
+										}, {
+											field: 'blog_user',
+											title: '发布者',
+											width: 75
+										}, {
+											field: 'blog_time',
+											title: '最后更新时间',
+											width: 175
+										}]
+									]
+								});
+								table.on('row(test)', function(obj) {
+									console.log(obj.tr) //得到当前行元素对象
+									console.log(obj.data) //得到当前行数据
+									window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
+								});
+							})
+						</script>
+						<h2><font color=red>${msg}</font></h2>
+						<hr />
 					</main>
+
 					<aside class="col-md-4">
 						<div class="widget widget-recent-posts">
 							<h3 class="widget-title">探索</h3>
@@ -223,6 +221,7 @@
 				</div>
 			</div>
 		</div>
+
 		<footer id="site-footer">
 			<div class="container">
 				<div class="row">
@@ -235,7 +234,6 @@
 			</div>
 		</footer>
 		<script src="${pageContext.request.contextPath}/js/script.js"></script>
-
 	</body>
 
 </html>

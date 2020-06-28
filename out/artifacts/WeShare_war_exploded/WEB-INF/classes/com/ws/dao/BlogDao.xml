@@ -30,7 +30,9 @@
 		like "%"#{search}"%"
 	</select>
 	<select id="selectAllBlogsList" resultType="com.ws.po.Blog" >
-		SELECT * FROM blog where blog_type=#{section} order by blog_time desc limit #{start}, #{size}
+		SELECT * FROM blog
+		where blog_type=#{section}
+		order by blog_time desc limit #{start}, #{size}
 	</select>
 	<select id="selectBlogsCount" resultType="int">
 		select count(*) from blog where blog_type=#{section}

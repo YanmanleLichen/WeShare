@@ -92,11 +92,20 @@ public class MainController {
 		System.out.println("toSearch.action");
 		return "Search";
 	}
+
 	@RequestMapping(value = "/toSection.action")
 	public String toSection(HttpSession session, Model model, String blog_type) {
 		List<Blog> blogs = ExploreBlogs();
 		session.setAttribute("exploreBlogs", blogs);
 		model.addAttribute("blog_type", blog_type);
 		return "Section";
+	}
+
+	@RequestMapping(value="/toFollowUserBlog.action")
+	public String toFollowUserBlog(HttpSession session) {
+		List<Blog> blogs = ExploreBlogs();
+		session.setAttribute("exploreBlogs", blogs);
+		System.out.println("toSearch.action");
+		return "FollowUserBlog";
 	}
 }
