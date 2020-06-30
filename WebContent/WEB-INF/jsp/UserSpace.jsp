@@ -150,7 +150,7 @@
 			</section>
 			
 			<section class="resume-section p-3 p-lg-5 d-flex d-column" id="blogs">
-				<table id="demo" lay-filter="test"></table>
+				<table id="demo0" lay-filter="test0"></table>
 				<input type="hidden" name="type" id="blog_user" value="${SpaceUser.user_name }" />
 				<script>
 					var blog_user = document.getElementById("blog_user").value;
@@ -159,7 +159,7 @@
 						var table = layui.table;
 						//第一个实例
 						table.render({
-							elem: '#demo'
+							elem: '#demo0'
 								//,height: 600
 								,
 							skin: 'nob',
@@ -203,7 +203,7 @@
 								}]
 							]
 						});
-						table.on('row(test)', function(obj) {
+						table.on('row(test0)', function(obj) {
 							console.log(obj.tr) //得到当前行元素对象
 							console.log(obj.data) //得到当前行数据
 							window.open("${pageContext.request.contextPath}/selectBlogByBlogId.action?blog_id=" + obj.data.blog_id, "_blank")
@@ -213,7 +213,7 @@
 			</section>
 			
 			<section class="resume-section p-3 p-lg-5 d-flex d-column" id="following">
-				<table id="demo1" lay-filter="test"></table>
+				<table id="demo1" lay-filter="test1"></table>
 				<input type="hidden" name="type" id="user_id" value="${SpaceUser.user_id }" />
 				<script>
 					var user_id = document.getElementById("user_id").value;
@@ -262,7 +262,7 @@
 								}]
 							]
 						});
-						table.on('row(test)', function(obj) {
+						table.on('row(test1)', function(obj) {
 							console.log(obj.tr) //得到当前行元素对象
 							console.log(obj.data) //得到当前行数据
 							window.open("${pageContext.request.contextPath}/toUserSpace.action?user_name=" + obj.data.user_id, "_blank")
@@ -272,7 +272,7 @@
 			</section>
 			
 			<section class="resume-section p-3 p-lg-5 d-flex d-column" id="followers">
-				<table id="demo2" lay-filter="test"></table>
+				<table id="demo2" lay-filter="test2"></table>
 				<input type="hidden" name="type" id="follow_user_id" value="${SpaceUser.user_id }" />
 				<script>
 					var follow_user_id = document.getElementById("follow_user_id").value;
@@ -321,7 +321,7 @@
 								}]
 							]
 						});
-						table.on('row(test)', function(obj) {
+						table.on('row(test2)', function(obj) {
 							console.log(obj.tr) //得到当前行元素对象
 							console.log(obj.data) //得到当前行数据
 							window.open("${pageContext.request.contextPath}/toUserSpace.action?user_name=" + obj.data.follow_user_id, "_blank")
