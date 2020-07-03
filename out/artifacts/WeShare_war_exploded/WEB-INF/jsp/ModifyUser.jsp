@@ -55,9 +55,6 @@
 										<a href="${pageContext.request.contextPath}/toCenter.action" data-hover="广场">广场</a>
 									</li>
 									<li class="cl-effect-11">
-										<a href="https://www.baidu.com/" data-hover="搜索" target="_blank">搜索</a>
-									</li>
-									<li class="cl-effect-11">
 										<a href="${pageContext.request.contextPath}/Logout.action" data-hover="退出">退出</a>
 									</li>
 									<li class="">

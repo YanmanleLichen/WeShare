@@ -129,6 +129,7 @@
                                         </a>
                                     </span>
 									<span class="post-author"><a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">发布者：${b.blog_user }</a></span>
+									<span class="post-author"><a target="_blank" href="${pageContext.request.contextPath}/toUserSpace.action?user_name=${b.blog_user}">分区：${b.blog_type }</a></span>
 								</div>
 							</header>
 							<div class="entry-content clearfix">
